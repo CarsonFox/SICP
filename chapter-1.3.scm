@@ -7,6 +7,9 @@
 (define (identity x) x)
 
 (define (inc x) (+ x 1))
+(define (dec x) (- x 1))
+
+(define (sum a b) (+ a b))
 
 (define (cube x) (* x x x))
 
@@ -33,3 +36,40 @@
   (define (term k)
     (* (coefficient k) (y k)))
   (* (/ h 3.0) (+ (y 0) (sum term 1 inc n))))
+
+(define (product-recursive term a next b)
+  (if (> a b)
+    1
+    (* (term a)
+       (product-recursive term (next a) next b))))
+
+(define (factorial-recursive n)
+    (product-recursive identity 2 inc n))
+
+(define (product-iter term a next b p)
+  (if (> a b)
+    p
+    (product-iter term (next a) next b (* p (term a)))))
+
+(define (factorial-iter n)
+  (product-iter identity 2 inc n 1))
+
+(define (accumulate-r combiner identity term a next b)
+  (if (> a b)
+    identity
+    (combiner (term a) (accumulate-r combiner identity term (next a) next b))))
+
+(define (sum-acc term a next b)
+  (accumulate-r sum 0 term a next b))
+
+; Don't have to provide the starting value, since it should just be the same as identity
+(define (accumulate-iter combiner identity term a next b)
+  (define (helper a b acc)
+    (if (> a b)
+      identity
+      (helper (next a) b (combiner acc (term a)))))
+  (helper a b identity))
+
+
+(define (sum-acc-iter term a next b)
+  (accumulate-iter sum 0 term a next b))
