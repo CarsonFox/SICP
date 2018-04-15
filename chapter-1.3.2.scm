@@ -9,8 +9,6 @@
 (define (inc x) (+ x 1))
 (define (dec x) (- x 1))
 
-(define (sum a b) (+ a b))
-
 (define (cube x) (* x x x))
 
 (define (sum-cubes a b)
@@ -60,7 +58,7 @@
     (combiner (term a) (accumulate-r combiner identity term (next a) next b))))
 
 (define (sum-acc term a next b)
-  (accumulate-r sum 0 term a next b))
+  (accumulate-iter + 0 term a next b))
 
 ; Don't have to provide the starting value, since it should just be the same as identity
 (define (accumulate-iter combiner identity term a next b)
@@ -72,4 +70,16 @@
 
 
 (define (sum-acc-iter term a next b)
-  (accumulate-iter sum 0 term a next b))
+  (accumulate-iter + 0 term a next b))
+
+(define (integral f a b dx)
+  (* (sum f (+ a (/ dx 2.0)) (lambda (x) (+ x dx)) b) dx))
+
+(define (wallis-pi n)
+  (define (prev-even x)
+    (if (even? x) x (- x 1)))
+  (define (prev-odd x)
+    (if (odd? x) x (- x 1)))
+  (* 4 (/
+         (product-iter prev-even 3 inc n)
+         (product-iter prev-odd 3 inc n))))
