@@ -75,11 +75,13 @@
 (define (integral f a b dx)
   (* (sum f (+ a (/ dx 2.0)) (lambda (x) (+ x dx)) b) dx))
 
+(define (prev-even x)
+  (if (even? x) x (- x 1)))
+(define (prev-odd x)
+  (if (odd? x) x (- x 1)))
+
+; Kind of annoying how you need to make all the literals floating point to not get a fraction
 (define (wallis-pi n)
-  (define (prev-even x)
-    (if (even? x) x (- x 1)))
-  (define (prev-odd x)
-    (if (odd? x) x (- x 1)))
-  (* 4 (/
-         (product-iter prev-even 3 inc n)
-         (product-iter prev-odd 3 inc n))))
+  (* 4.0 (/
+    (product-iter prev-even 3.0 (lambda (x) (+ x 1.0)) n 1.0)
+    (product-iter prev-odd 3.0 (lambda (x) (+ x 1.0)) n 1.0))))
