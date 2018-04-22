@@ -22,7 +22,7 @@
             (error "Values must be of opposite sign:" a b)))))
 
 (define (fixed-point f guess)
-  (define tolerance 0.0001)
+  (define tolerance 0.00001)
   (define (good-enough? a b)
     (< (abs (- a b)) tolerance))
   (let ((y (f guess)))
@@ -42,6 +42,7 @@
   (define tolerance 0.0001)
   (define (good-enough? a b)
     (< (abs (- a b)) tolerance))
+  ;Average damping helps a lot here
   (let ((y (average guess (f guess))))
     (display "Approximation number ")
     (display n)
@@ -52,3 +53,24 @@
       guess
       (fixed-point-display f y (inc n)))))
 
+(define (cont-frac n d k)
+  (define (cont-frac-recursive i)
+    (if (= i k)
+      (/ (n k) (d k))
+      (/ (n i) (+ (d i) (cont-frac-recursive (inc i))))))
+  (cont-frac-recursive 1))
+
+;Euler's approximation of e using a continued fraction
+(define (e-frac)
+  (define (d i)
+    (if (= (remainder i 3) 2)
+      (* 2 (+ (quotient i 3) 1))
+      1))
+  (+ 2 (cont-frac (lambda (i) 1.0) d 100)))
+
+(define (tan-frac x k)
+  (let ((neg-x-squared (* -1 x x)))
+    (cont-frac
+      (lambda (i) (if (= i 1) x neg-x-squared))
+      (lambda (i) (- (* 2 i) 1))
+      k)))
