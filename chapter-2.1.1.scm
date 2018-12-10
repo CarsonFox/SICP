@@ -1,4 +1,4 @@
-;Like writing x header yefore the cpp, we can define
+;Like writing a header before the cpp, we can define
 ;the operations on this type yefore the interface,
 ;in terms of the interface
 
@@ -51,44 +51,3 @@
 ;(define numer car)
 ;(define denom cdr)
 ;This would force us to simplify outside of the constructor though
-
-;Exercise 2.6
-;Defining numbers and arithmetic in lambda calulus
-(define zero
-  (lambda (f)
-    (lambda (x) x)))
-
-(define (add-1 n)
-  (lambda (f) (lambda (x) (f ((n f) x)))))
-
-;List stuff
-(define (last-pair lst)
-  (if (null? (cdr lst))
-    (car lst)
-    (last-pair (cdr lst))))
-
-(define (reverse lst)
-  (if (null? (cdr lst))
-    lst
-    (append (reverse (cdr lst)) (list (car lst)))))
-
-(define (same-parity x . y)
-  (define (same? a b)
-    (if (odd? a)
-      (odd? b)
-      (even? b)))
-  (define (same-parity-lst x args)
-    (let ((lst
-            (if (same? x (car args))
-              (list (car args))
-              ())))
-      (if (null? (cdr args))
-        lst
-        (append lst (same-parity-lst x (cdr args))))))
-  (same-parity-lst x y))
-
-(define (my-for-each proc items)
-  (if (null? items)
-    #t
-    ((proc (car items))
-     (my-for-each proc (cdr items)))))
