@@ -28,9 +28,24 @@
     (variable? b)
     (eq? a b)))
 
+;Assume we only want to ask about literals
+(define (=number? exp number)
+  (and (number? exp) (= exp number)))
+
 ;a1 and a2 will be variables, whose values are symbols.
-(define (make-sum a1 a2) (list `+ a1 a2))
-(define (make-product a1 a2) (list `* a1 a2))
+(define (make-sum a1 a2)
+  (cond ((and (number? a1) (number? a2)) (+ a1 a2))
+        ((=number? a1 0) a2)
+        ((=number? a2 0) a1)
+        (else (list `+ a1 a2))))
+
+(define (make-product a1 a2)
+  (cond ((and (number? a1) (number? a2)) (* a1 a2))
+        ((=number? a1 0) 0)
+        ((=number? a1 1) a2)
+        ((=number? a2 0) 0)
+        ((=number? a2 1) a1)
+        (else (list `* a1 a2))))
 
 (define (sum? x)
   (and
