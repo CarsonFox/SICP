@@ -15,6 +15,10 @@
                          (deriv (multiplicand exp) var))
            (make-product (deriv (multiplier exp) var)
                          (multiplicand exp))))
+        ((exponential? exp)
+         (make-product (exponent exp)
+                       (make-exponent (base exp)
+                                      (- (exponent exp) 1))))
         (else
           (error "unknown expression type -- DERIV" exp))))
 
@@ -39,14 +43,6 @@
         ((=number? a2 0) a1)
         (else (list `+ a1 a2))))
 
-(define (make-product a1 a2)
-  (cond ((and (number? a1) (number? a2)) (* a1 a2))
-        ((=number? a1 0) 0)
-        ((=number? a1 1) a2)
-        ((=number? a2 0) 0)
-        ((=number? a2 1) a1)
-        (else (list `* a1 a2))))
-
 (define (sum? x)
   (and
     (pair? x)
@@ -61,6 +57,13 @@
 (define (augend s)
   (caddr s))
 
+(define (make-product a1 a2)
+  (cond ((and (number? a1) (number? a2)) (* a1 a2))
+        ((or (=number? a1 0) (=number? a2 0)) 0)
+        ((=number? a1 1) a2)
+        ((=number? a2 1) a1)
+        (else (list `* a1 a2))))
+
 (define (product? x)
   (and
     (pair? x)
@@ -71,6 +74,22 @@
 
 (define (multiplicand p)
   (caddr p))
+
+(define (make-exponent b e)
+  (cond ((= e 0) 1)
+        ((= e 1) b)
+        (else (list `** b e))))
+
+(define (exponential? exp)
+  (and
+    (pair? exp)
+    (eq? `** (car exp))))
+
+(define (base e)
+  (cadr e))
+
+(define (exponent e)
+  (caddr e))
 
 (define p1 `(+ x 3))
 (define p3 '(* (* x y) (+ x 3)))
