@@ -41,18 +41,18 @@
   (cond ((and (number? a1) (number? a2)) (+ a1 a2))
         ((=number? a1 0) a2)
         ((=number? a2 0) a1)
-        (else (list `+ a1 a2))))
+        (else (list a1 '+ a2))))
 
 (define (sum? x)
   (and
     (pair? x)
-    (eq? `+ (car x))))
+    (eq? '+ (cadr x))))
 
 ;Selectors using the cadr and caddr procedures:
 ;portmanteaus of (car (cdr x)) and (car (cdr (cdr x))).
 ;Seems like there are lots of these, but not infinite.
 (define (addend s)
-  (cadr s))
+  (car s))
 
 (define (augend s)
   (caddr s))
@@ -62,15 +62,15 @@
         ((or (=number? a1 0) (=number? a2 0)) 0)
         ((=number? a1 1) a2)
         ((=number? a2 1) a1)
-        (else (list `* a1 a2))))
+        (else (list a1 '* a2))))
 
 (define (product? x)
   (and
     (pair? x)
-    (eq? `* (car x))))
+    (eq? '* (cadr x))))
 
 (define (multiplier p)
-  (cadr p))
+  (car p))
 
 (define (multiplicand p)
   (caddr p))
@@ -78,18 +78,18 @@
 (define (make-exponent b e)
   (cond ((= e 0) 1)
         ((= e 1) b)
-        (else (list `** b e))))
+        (else (list b '** e))))
 
 (define (exponential? exp)
   (and
     (pair? exp)
-    (eq? `** (car exp))))
+    (eq? '** (cadr exp))))
 
 (define (base e)
-  (cadr e))
+  (car e))
 
 (define (exponent e)
   (caddr e))
 
-(define p1 `(+ x 3))
-(define p3 '(* (* x y) (+ x 3)))
+(define p1 '(x + 3))
+(define p3 '((x * y) * (x + 3)))
