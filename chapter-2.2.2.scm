@@ -46,7 +46,7 @@
       (make-bst-list
         (bst-insert tree (car lst))
         (cdr lst))))
-  (make-bst-list () elements))
+  (make-bst-list (list) elements))
 
 (define (print-bst tree)
   (if (not (null? tree))
@@ -70,7 +70,7 @@
 (define (range-recursive a b)
   (if (< a b)
     (append (list a) (range (+ a 1) b))
-    ()))
+    (list)))
 
 ;This version appends to the end of a singly linked list
 ;that means it's n^2...
@@ -82,7 +82,7 @@
         b
         (append lst (list a)))
       lst))
-  (range-tail a b ()))
+  (range-tail a b (list)))
 
 ;This one's tail recursive, and linear time.
 (define (range a b)
@@ -90,4 +90,4 @@
     (if (<= a b)
       (range-tail a (- b 1) (append (list b) lst))
       lst))
-  (range-tail a (- b 1) ()))
+  (range-tail a (- b 1) (list)))

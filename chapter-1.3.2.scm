@@ -85,3 +85,5 @@
   (* 4.0 (/
     (product-iter prev-even 3.0 (lambda (x) (+ x 1.0)) n 1.0)
     (product-iter prev-odd 3.0 (lambda (x) (+ x 1.0)) n 1.0))))
+
+(define (identity n) (n))

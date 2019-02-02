@@ -20,10 +20,6 @@
 ;             (cons (car a) (intersection-set (cdr a) (cdr b))))
 ;            ((< (car a) (car b)) (intersection-set (cdr a) b))
 ;            (else (intersection-set a (cdr b))))))
-
-(define true #t)
-(define false #f)
-
 ;Binary tree set
 
 ;Selectors:
@@ -43,7 +39,7 @@
         (else (element-of-set? x (right-subtree set)))))
 
 (define (adjoin-set x set)
-  (cond ((null? set) (make-tree x () ()))
+  (cond ((null? set) (make-tree x (list) (list)))
         ((= x (element set)) set)
         ((< x (element set))
          (make-tree

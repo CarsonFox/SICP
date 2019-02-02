@@ -17,7 +17,7 @@
     (let ((lst
             (if (same? x (car args))
               (list (car args))
-              ())))
+              (list))))
       (if (null? (cdr args))
         lst
         (append lst (same-parity-lst x (cdr args))))))
