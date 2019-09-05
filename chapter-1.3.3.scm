@@ -36,10 +36,10 @@
 ;Let a = x, b = 1. The fixed point of x -> 1 + 1/x = (x + 1) / x. Substitution yields
 ;a = (a + b) / a. Since b = 1, a = a / b. This is now the golden ratio: a / b = (a + b) / a
 (define (golden-ratio)
-  (fixed-point (lambda (x) (+ 1 (/ 1 x))) 1.0))
+  (fixed-point-display (lambda (x) (+ 1 (/ 1 x))) 1.0 100))
 
 (define (fixed-point-display f guess n)
-  (define tolerance 0.0001)
+  (define tolerance 0.00001)
   (define (good-enough? a b)
     (< (abs (- a b)) tolerance))
   ;Average damping helps a lot here

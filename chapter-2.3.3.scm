@@ -20,15 +20,21 @@
 ;             (cons (car a) (intersection-set (cdr a) (cdr b))))
 ;            ((< (car a) (car b)) (intersection-set (cdr a) b))
 ;            (else (intersection-set a (cdr b))))))
+
 ;Binary tree set
 
-;Selectors:
+;Selectors
 (define (left-subtree t) (cadr t))
 (define (right-subtree t) (caddr t))
 (define (element t) (car t))
 
+(define (bst-smallest t)
+  (if (null? (left-subtree t))
+      (element tree)
+      (bst-smallest (left-subtree t))))
+
 ;Constructor
-(define (make-tree e left right)
+(define (make-bst e left right)
   (list e left right))
 
 ;Predicates
@@ -39,15 +45,15 @@
         (else (element-of-set? x (right-subtree set)))))
 
 (define (adjoin-set x set)
-  (cond ((null? set) (make-tree x (list) (list)))
+  (cond ((null? set) (make-bst x (list) (list)))
         ((= x (element set)) set)
         ((< x (element set))
-         (make-tree
+         (make-bst
            (element set)
            (adjoin-set x (left-subtree set))
            (right-subtree set)))
         (else
-         (make-tree
+         (make-bst
            (element set)
            (left-subtree set)
            (adjoin-set x (right-subtree set))))))
